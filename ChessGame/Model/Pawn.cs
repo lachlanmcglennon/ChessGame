@@ -1,20 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChessGame.Model
+﻿namespace ChessGame.Model
 {
     public class Pawn : Piece
     {
 
         public Pawn(int xpos, int ypos, String color) : base("Pawn", "♙", color, xpos, ypos)
         {
-
-
             direction = 1;
             if (Color == PieceColors.White)
             {
@@ -25,24 +15,20 @@ namespace ChessGame.Model
             else
             {
                 this.Symbol = ("BP");
-
             }
         }
         public int direction { get; set; }
 
-        public override List<int> possibleMoves(ChessBoard board)
+        public override List<int> PossibleMoves(ChessBoard board)
         {
             List<int> moves = new List<int>();
-
 
             int tempXpos = base.Xpos;
             int tempYpos = base.Ypos;
             int temp;
 
-
-
             tempYpos += direction;
-            temp = base.checkMove(tempXpos, tempYpos, board, false);
+            temp = base.CheckMove(tempXpos, tempYpos, board, false);
 
             if (temp != -404)
             {
@@ -54,7 +40,7 @@ namespace ChessGame.Model
 
             tempYpos += direction;
             tempXpos += 1;
-            temp = base.checkMove(tempXpos, tempYpos, board, true);
+            temp = base.CheckMove(tempXpos, tempYpos, board, true);
             if (temp != -404)
             {
                 moves.Add(Math.Abs(temp));
@@ -64,7 +50,7 @@ namespace ChessGame.Model
 
             tempYpos += direction;
             tempXpos -= 1;
-            temp = base.checkMove(tempXpos, tempYpos, board, true);
+            temp = base.CheckMove(tempXpos, tempYpos, board, true);
             if (temp != -404)
             {
                 moves.Add(Math.Abs(temp));
@@ -76,21 +62,15 @@ namespace ChessGame.Model
 
                 tempYpos += (direction + direction);
 
-                temp = base.checkMove(tempXpos, tempYpos, board, false);
+                temp = base.CheckMove(tempXpos, tempYpos, board, false);
                 if (temp != -404)
                 {
                     moves.Add(Math.Abs(temp));
                 }
             }
 
-
-
-
-
-
             return moves;
         }
-
     }
 }
 

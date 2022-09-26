@@ -4,8 +4,6 @@
     {
         public Knight(int xpos, int ypos, String color) : base("Knight", "♘", color, xpos, ypos)
         {
-
-
             if (color == "white")
             {
                 this.Symbol = ("♞");
@@ -18,10 +16,9 @@
         }
 
 
-        public override List<int> possibleMoves(ChessBoard board)
+        public override List<int> PossibleMoves(ChessBoard board)
         {
             List<int> moves = new List<int>();
-
 
             int tempXpos = this.Xpos;
             int tempYpos = this.Ypos;
@@ -29,7 +26,7 @@
 
             tempXpos += 2;
             tempYpos += 1;
-            temp = this.checkMove(tempXpos, tempYpos, board);
+            temp = this.CheckMove(tempXpos, tempYpos, board);
             if (temp != -404)
             {
                 moves.Add(Math.Abs(temp));
@@ -39,7 +36,7 @@
             tempYpos = this.Ypos;
             tempXpos += 2;
             tempYpos -= 1;
-            temp = this.checkMove(tempXpos, tempYpos, board);
+            temp = this.CheckMove(tempXpos, tempYpos, board);
             if (temp != -404)
             {
                 moves.Add(Math.Abs(temp));
@@ -48,7 +45,7 @@
             tempYpos = this.Ypos;
             tempXpos -= 2;
             tempYpos += 1;
-            temp = this.checkMove(tempXpos, tempYpos, board);
+            temp = this.CheckMove(tempXpos, tempYpos, board);
             if (temp != -404)
             {
                 moves.Add(Math.Abs(temp));
@@ -57,7 +54,7 @@
             tempYpos = this.Ypos;
             tempXpos -= 2;
             tempYpos -= 1;
-            temp = this.checkMove(tempXpos, tempYpos, board);
+            temp = this.CheckMove(tempXpos, tempYpos, board);
             if (temp != -404)
             {
                 moves.Add(Math.Abs(temp));
@@ -66,7 +63,7 @@
             tempYpos = this.Ypos;
             tempXpos -= 1;
             tempYpos -= 2;
-            temp = this.checkMove(tempXpos, tempYpos, board);
+            temp = this.CheckMove(tempXpos, tempYpos, board);
             if (temp != -404)
             {
                 moves.Add(Math.Abs(temp));
@@ -75,7 +72,7 @@
             tempYpos = this.Ypos;
             tempXpos += 1;
             tempYpos -= 2;
-            temp = this.checkMove(tempXpos, tempYpos, board);
+            temp = this.CheckMove(tempXpos, tempYpos, board);
             if (temp != -404)
             {
                 moves.Add(Math.Abs(temp));
@@ -84,7 +81,7 @@
             tempYpos = this.Ypos;
             tempXpos -= 1;
             tempYpos += 2;
-            temp = this.checkMove(tempXpos, tempYpos, board);
+            temp = this.CheckMove(tempXpos, tempYpos, board);
             if (temp != -404)
             {
                 moves.Add(Math.Abs(temp));
@@ -93,15 +90,11 @@
             tempYpos = this.Ypos;
             tempXpos += 1;
             tempYpos += 2;
-            temp = this.checkMove(tempXpos, tempYpos, board);
+            temp = this.CheckMove(tempXpos, tempYpos, board);
             if (temp != -404)
             {
                 moves.Add(Math.Abs(temp));
             }
-
-
-
-
 
             return moves;
         }

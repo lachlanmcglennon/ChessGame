@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ChessGame.Model
+﻿namespace ChessGame.Model
 {
     public class Bishop : Piece
     {
@@ -25,10 +18,9 @@ namespace ChessGame.Model
         }
 
 
-        public override List<int> possibleMoves(ChessBoard board)
+        public override List<int> PossibleMoves(ChessBoard board)
         {
             List<int> moves = new List<int>();
-
 
             int tempXpos = this.Xpos;
             int tempYpos = this.Ypos;
@@ -37,7 +29,7 @@ namespace ChessGame.Model
             {
                 tempXpos += 1;
                 tempYpos += 1;
-                temp = this.checkMove(tempXpos, tempYpos, board);
+                temp = this.CheckMove(tempXpos, tempYpos, board);
                 if (temp != -404)
                 {
                     moves.Add(Math.Abs(temp));
@@ -47,13 +39,14 @@ namespace ChessGame.Model
                     break;
                 }
             }
+
             tempXpos = this.Xpos;
             tempYpos = this.Ypos;
             while (true)
             {
                 tempXpos -= 1;
                 tempYpos += 1;
-                temp = this.checkMove(tempXpos, tempYpos, board);
+                temp = this.CheckMove(tempXpos, tempYpos, board);
                 if (temp != -404)
                 {
                     moves.Add(Math.Abs(temp));
@@ -63,13 +56,14 @@ namespace ChessGame.Model
                     break;
                 }
             }
+
             tempXpos = this.Xpos;
             tempYpos = this.Ypos;
             while (true)
             {
                 tempYpos -= 1;
                 tempXpos -= 1;
-                temp = this.checkMove(tempXpos, tempYpos, board);
+                temp = this.CheckMove(tempXpos, tempYpos, board);
                 if (temp != -404)
                 {
                     moves.Add(Math.Abs(temp));
@@ -79,13 +73,14 @@ namespace ChessGame.Model
                     break;
                 }
             }
+
             tempXpos = this.Xpos;
             tempYpos = this.Ypos;
             while (true)
             {
                 tempXpos += 1;
                 tempYpos -= 1;
-                temp = this.checkMove(tempXpos, tempYpos, board);
+                temp = this.CheckMove(tempXpos, tempYpos, board);
                 if (temp != -404)
                 {
                     moves.Add(Math.Abs(temp));
@@ -95,9 +90,8 @@ namespace ChessGame.Model
                     break;
                 }
             }
+
             return moves;
         }
-
-
     }
 }

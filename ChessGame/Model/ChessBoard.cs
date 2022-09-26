@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
-using static ChessGame.Model.Piece;
-using static System.Net.Mime.MediaTypeNames;
+﻿using static ChessGame.Model.Piece;
 
 namespace ChessGame.Model
 {
@@ -16,32 +8,38 @@ namespace ChessGame.Model
 
         public ChessBoard()
         {
-            this.board = new Piece[8, 8];
-            createChessBoard();
+            this.Board = new Piece[8, 8];
+            CreateChessBoard();
         }
+
         public ChessBoard(Piece[,] board)
         {
-            this.board = board;
+            this.Board = board;
         }
-        public Piece[,] board { get; set; }
-        public void createChessBoard()
+
+        public ChessBoard(string[,] board)
+        {
+            SetCustomBoard(board);
+        }
+
+        public Piece[,] Board { get; set; }
+        public void CreateChessBoard()
         {
             String[,] a = {
-     {"br","bk","bb","bK","bq","bb","bk","br"}
-    ,{"bp","bp","bp","bp","bp","bp","bp","bp"}
-    ,{"-","-","-","-","-","-","-","-"}
-    ,{"-","-","-","-","-","-","-","-"}
-    ,{"-","-","-","-","-","-","-","-"}
-    ,{"-","-","-","-","-","-","-","-"}
-    ,{"wp","wp","wp","wp","wp","wp","wp","wp"}
-    ,{"wr","wk","wb","wK","wq","wb","wk","wr"}};
-            this.setCustomBoard(a);
+                 {"br","bk","bb","bK","bq","bb","bk","br"}
+                ,{"bp","bp","bp","bp","bp","bp","bp","bp"}
+                ,{"-","-","-","-","-","-","-","-"}
+                ,{"-","-","-","-","-","-","-","-"}
+                ,{"-","-","-","-","-","-","-","-"}
+                ,{"-","-","-","-","-","-","-","-"}
+                ,{"wp","wp","wp","wp","wp","wp","wp","wp"}
+                ,{"wr","wk","wb","wK","wq","wb","wk","wr"}};
+            this.SetCustomBoard(a);
         }
 
-
-        public void setCustomBoard(String[,] template)
+        public void SetCustomBoard(String[,] template)
         {
-            if (verifyChessBoardTemplate(template))
+            if (VerifyChessBoardTemplate(template))
             {
                 Piece[,] newBoard = new Piece[8, 8];
                 for (int row = 0; row < template.GetLength(0); row++)
@@ -107,7 +105,7 @@ namespace ChessGame.Model
                         }
                     }
                 }
-                this.board = newBoard;
+                this.Board = newBoard;
             }
             else
             {
@@ -115,7 +113,7 @@ namespace ChessGame.Model
             }
         }
 
-        public bool checkInRange(int xpos, int ypos)
+        public bool CheckInRange(int xpos, int ypos)
         {
             if (xpos >= 0 && xpos <= 7 && ypos >= 0 && ypos <= 7)
             {
@@ -126,16 +124,16 @@ namespace ChessGame.Model
                 return false;
             }
         }
-        public bool avoidsCheck(int initialXpos, int initialYpos, int finalXpos, int finalYpos, String color)
+        public bool AvoidsCheck(int initialXpos, int initialYpos, int finalXpos, int finalYpos, String color)
         {
-            Piece[,] testBoardArray = board.Clone() as Piece[,];
+            Piece[,] testBoardArray = Board.Clone() as Piece[,];
             testBoardArray[finalYpos, finalXpos] = testBoardArray[initialYpos, initialXpos];
             Piece place = testBoardArray[finalYpos, finalXpos];
             testBoardArray[finalYpos, finalXpos].Xpos = finalXpos;
             testBoardArray[finalYpos, finalXpos].Ypos = finalYpos;
             testBoardArray[initialYpos, initialXpos] = new Empty(initialYpos, initialXpos);
             ChessBoard testBoard = new ChessBoard(testBoardArray);
-            Piece king = find(testBoardArray, "King", color);
+            Piece king = Find(testBoardArray, "King", color);
             int kingPos = (king.Xpos * 10) + king.Ypos;
 
             for (int row = 0; row < testBoardArray.GetLength(0); row++)
@@ -145,7 +143,7 @@ namespace ChessGame.Model
                     Piece a = testBoardArray[row, col];
                     if (a.Color != color)
                     {
-                        List<int> possibleMoves = a.possibleMoves(testBoard);
+                        List<int> possibleMoves = a.PossibleMoves(testBoard);
                         foreach (int move in possibleMoves)
                         {
                             if (move == kingPos)
@@ -171,26 +169,25 @@ namespace ChessGame.Model
             return true;
 
         }
-        public bool movePiece(int initialXpos, int initialYpos, int finalXpos, int finalYpos, String color)
+        public bool MovePiece(int initialXpos, int initialYpos, int finalXpos, int finalYpos, String color)
         {
             int finalPos = (finalXpos * 10) + finalYpos;
-            if (board[initialYpos, initialXpos].Color == (color))
+            if (Board[initialYpos, initialXpos].Color == (color))
             {
-                List<int> possibleMoves = board[initialYpos, initialXpos].possibleMoves(this);
-                if (canMove(finalPos, possibleMoves))
+                List<int> possibleMoves = Board[initialYpos, initialXpos].PossibleMoves(this);
+                if (CanMove(finalPos, possibleMoves))
                 {
 
-                    if (avoidsCheck(initialXpos, initialYpos, finalXpos, finalYpos, color))
+                    if (AvoidsCheck(initialXpos, initialYpos, finalXpos, finalYpos, color))
                     {
-                        board[finalYpos, finalXpos] = board[initialYpos, initialXpos];
+                        Board[finalYpos, finalXpos] = Board[initialYpos, initialXpos];
 
-                        board[finalYpos, finalXpos].Xpos = (finalXpos);
-                        board[finalYpos, finalXpos].Ypos = (finalYpos);
-                        board[initialYpos, initialXpos] = new Empty(initialYpos, initialXpos);
+                        Board[finalYpos, finalXpos].Xpos = (finalXpos);
+                        Board[finalYpos, finalXpos].Ypos = (finalYpos);
+                        Board[initialYpos, initialXpos] = new Empty(initialYpos, initialXpos);
                         Console.WriteLine("move complete");
 
                         return true;
-
                     }
                     else
                     {
@@ -210,7 +207,7 @@ namespace ChessGame.Model
                 return false;
             }
         }
-        public bool canMove(int finalPos, List<int> possibleMoves)
+        public bool CanMove(int finalPos, List<int> possibleMoves)
         {
 
             foreach (int move in possibleMoves)
@@ -222,7 +219,7 @@ namespace ChessGame.Model
             }
             return false;
         }
-        private Piece find(Piece[,] SearchBoard, String identify, String color)
+        private Piece Find(Piece[,] SearchBoard, String identify, String color)
         {
             for (int row = 0; row < SearchBoard.GetLength(0); row++)
             {
@@ -239,15 +236,14 @@ namespace ChessGame.Model
         }
 
 
-
-        public int checkKing()
+        public int CheckKing()
         {
             int win = 0;
-            for (int row = 0; row < board.GetLength(0); row++)
+            for (int row = 0; row < Board.GetLength(0); row++)
             {
-                for (int col = 0; col < board.GetLength(1); col++)
+                for (int col = 0; col < Board.GetLength(1); col++)
                 {
-                    Piece check = board[row, col];
+                    Piece check = Board[row, col];
                     if (check.PieceType == "King")
                     {
                         if (win > 0)
@@ -272,11 +268,11 @@ namespace ChessGame.Model
             return win;
         }
 
-        public void printChessBoard()
+        public void PrintChessBoard()
         {
             String border = $" |{new string('-', 39)}|";
 
-            if (verifyChessBoard(board))
+            if (VerifyChessBoard(Board))
             {
                 Console.WriteLine("    1    2    3    4    5    6    7    8");
                 for (int row = 0; row < 8; row++)
@@ -286,11 +282,9 @@ namespace ChessGame.Model
                     for (int col = 0; col < 8; col++)
                     {
                         Console.Write("|");
-                        Console.Write(" " + board[row, col].Symbol + " ");
+                        Console.Write(" " + Board[row, col].Symbol + " ");
                     }
                     Console.Write("|\n");
-
-
                 }
                 Console.WriteLine(border);
             }
@@ -299,24 +293,22 @@ namespace ChessGame.Model
                 Console.WriteLine("error invalid chessboard");
             }
         }
-        public void printReverseChessBoard()
+        public void PrintReverseChessBoard()
         {
             String border = $" |{new string('-', 39)}|";
-            if (verifyChessBoard(board))
+            if (VerifyChessBoard(Board))
             {
                 Console.WriteLine("    1    2    3    4    5    6    7    8");
-                for (int row = board.GetLength(0) - 1; row > -1; row--)
+                for (int row = Board.GetLength(0) - 1; row > -1; row--)
                 {
                     Console.WriteLine(border);
                     Console.Write(row + 1);
                     for (int col = 0; col < 8; col++)
                     {
                         Console.Write("|");
-                        Console.Write(" " + board[row, col].Symbol + " ");
+                        Console.Write(" " + Board[row, col].Symbol + " ");
                     }
                     Console.Write("|\n");
-
-
                 }
                 Console.WriteLine(border);
             }
@@ -325,16 +317,12 @@ namespace ChessGame.Model
                 Console.WriteLine("error invalid chessboard");
             }
         }
-        public static bool verifyChessBoardTemplate(String[,] chessBoard)
+        public static bool VerifyChessBoardTemplate(String[,] chessBoard)
         {
-
             return (chessBoard.GetLength(0) == 8 && chessBoard.GetLength(1) == 8);
-
-
         }
-        public static bool verifyChessBoard(Piece[,] chessBoard)
+        public static bool VerifyChessBoard(Piece[,] chessBoard)
         {
-
             return (chessBoard.GetLength(0) == 8 && chessBoard.GetLength(1) == 8);
         }
     }

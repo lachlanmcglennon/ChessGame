@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ChessGame.Model
+﻿namespace ChessGame.Model
 {
     public class Piece
     {
@@ -28,12 +26,12 @@ namespace ChessGame.Model
         public int Xpos { get; set; }
         public int Ypos { get; set; }
 
-        public static bool canMove(int x, int y, string[][] board)
+        public static bool CanMove(int x, int y, string[][] board)
         {
             return true;
         }
 
-        public string getOpposingColor()
+        public string GetOpposingColor()
         {
             if (this.Color == PieceColors.White)
             {
@@ -48,60 +46,54 @@ namespace ChessGame.Model
                 return PieceColors.Empty;
             }
         }
-        public virtual List<int> possibleMoves(ChessBoard board)
+        public virtual List<int> PossibleMoves(ChessBoard board)
         {
             return new List<int>();
         }
-        public int checkMove(int tempXpos, int tempYpos, ChessBoard board)
+        public int CheckMove(int tempXpos, int tempYpos, ChessBoard board)
         {
-            if (board.checkInRange(tempXpos, tempYpos))
+            if (board.CheckInRange(tempXpos, tempYpos))
             {
-                if (board.board[tempYpos, tempXpos].PieceType == PieceColors.Empty)
+                if (board.Board[tempYpos, tempXpos].PieceType == PieceColors.Empty)
                 {
 
                     return tempXpos * 10 + tempYpos;
                 }
-                else if (!(board.board[tempYpos, tempXpos].Color == this.Color))
+                else if (!(board.Board[tempYpos, tempXpos].Color == this.Color))
                 {
                     return -(tempXpos * 10 + tempYpos);
-
                 }
                 else
                 {
                     return -404;
                 }
-
             }
             else
             {
                 return -404;
             }
         }
-        public int checkMove(int tempXpos, int tempYpos, ChessBoard board, bool isCapture)
+        public int CheckMove(int tempXpos, int tempYpos, ChessBoard board, bool isCapture)
         {
-            if (board.checkInRange(tempXpos, tempYpos))
+            if (board.CheckInRange(tempXpos, tempYpos))
             {
-                if (board.board[tempYpos, tempXpos].Color == PieceColors.Empty && !isCapture)
+                if (board.Board[tempYpos, tempXpos].Color == PieceColors.Empty && !isCapture)
                 {
-
                     return tempXpos * 10 + tempYpos;
                 }
-                else if (board.board[tempYpos, tempXpos].Color == getOpposingColor() && isCapture)
+                else if (board.Board[tempYpos, tempXpos].Color == GetOpposingColor() && isCapture)
                 {
                     return -(tempXpos * 10 + tempYpos);
-
                 }
                 else
                 {
                     return -404;
                 }
-
             }
             else
             {
                 return -404;
             }
         }
-
     }
 }
